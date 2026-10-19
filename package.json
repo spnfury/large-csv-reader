@@ -11,7 +11,9 @@
       "default": "./src/index.js"
     }
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "sideEffects": false,
   "scripts": {
     "test": "node --test test/"
@@ -19,8 +21,26 @@
   "engines": {
     "node": ">=20"
   },
-  "keywords": ["csv", "large-csv", "big-csv", "csv-viewer", "csv-parser", "split-csv", "excel", "browser", "file-api", "streaming"],
+  "keywords": [
+    "csv",
+    "large-csv",
+    "big-csv",
+    "csv-viewer",
+    "csv-parser",
+    "split-csv",
+    "excel",
+    "browser",
+    "file-api",
+    "streaming"
+  ],
   "homepage": "https://csvcreator.com/en/large-csv-viewer",
   "license": "MIT",
-  "author": "CSV Creator (https://csvcreator.com)"
+  "author": "CSV Creator (https://csvcreator.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spnfury/large-csv-reader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/spnfury/large-csv-reader/issues"
+  }
 }
