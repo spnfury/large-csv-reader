@@ -1,0 +1,26 @@
+{
+  "name": "large-csv-reader",
+  "version": "0.1.0",
+  "description": "Open, page through, search, slice and split multi-gigabyte CSV files in the browser or Node without loading them into memory.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "files": ["src"],
+  "sideEffects": false,
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": ["csv", "large-csv", "big-csv", "csv-viewer", "csv-parser", "split-csv", "excel", "browser", "file-api", "streaming"],
+  "homepage": "https://csvcreator.com/en/large-csv-viewer",
+  "license": "MIT",
+  "author": "CSV Creator (https://csvcreator.com)"
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>large-csv-reader demo</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; margin: 2rem auto; max-width: 960px; padding: 0 16px; }
+  table { border-collapse: collapse; font-size: 13px; display: block; overflow: auto; }
+  td, th { border: 1px solid #ddd; padding: 4px 8px; white-space: nowrap; }
+  th { background: #eef; }
+</style>
+</head>
+<body>
+<h1>large-csv-reader demo</h1>
+<p>Pick a CSV file of any size. It is read from your disk in pieces and never uploaded.
+  Need a big file? Generate one at <a href="https://csvcreator.com/en/large-sample-csv-files">csvcreator.com/en/large-sample-csv-files</a>.</p>
+<input type="file" id="file" accept=".csv,.tsv,.txt">
+<p id="status"></p>
+<p><button id="prev">Previous</button> <button id="next">Next</button> Go to row <input id="goto" size="10"></p>
+<table id="grid"></table>
+<script type="module">
+  import { openLargeCsv } from '../src/index.js';
+  const $ = (id) => document.getElementById(id);
+  const PAGE = 50;
+  let csv, start = 1;
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  async function show(row) {
+    start = Math.min(Math.max(1, row), Math.max(1, csv.rowCount - PAGE + 1));
+    const rows = await csv.rows(start, PAGE);
+    $('grid').innerHTML = `<tr><th>#</th>${csv.header.map((h) => `<th>${esc(h)}</th>`).join('')}</tr>`
+      + rows.map((r, i) => `<tr><td>${start + i}</td>${r.map((c) => `<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+  }
+  $('file').onchange = async (e) => {
+    const t0 = performance.now();
+    csv = await openLargeCsv(e.target.files[0], { onProgress: (f, n) => { $('status').textContent = `Indexing… ${Math.round(f * 100)}% · ${n.toLocaleString()} rows`; } });
+    $('status').textContent = `${csv.rowCount.toLocaleString()} rows · delimiter "${csv.delimiter}" · ${csv.encoding} · indexed in ${((performance.now() - t0) / 1000).toFixed(1)} s`;
+    show(1);
+  };
+  $('prev').onclick = () => csv && show(start - PAGE);
+  $('next').onclick = () => csv && show(start + PAGE);
+  $('goto').onchange = (e) => csv && show(parseInt(e.target.value, 10) || 1);
+</script>
+</body>
+</html>
